@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../components/ui/Button";
+import Header from "@/components/layout/Header";
 
 const ProgramsPage: React.FC = () => {
   const featuredPrograms = [
@@ -54,8 +55,9 @@ const ProgramsPage: React.FC = () => {
   ];
 
   return (
-    <div className="py-12 bg-gradient-to-br from-slate-50 to-sky-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-gradient-to-br from-slate-50 to-sky-50">
+      <Header />
+      <div className="py-12 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-secondary-900 mb-6">
             Our Programs & Initiatives

@@ -7,6 +7,8 @@ import TextArea from "../../components/ui/TextArea";
 import Button from "../../components/ui/Button";
 import { MembershipApplication } from "../../types/index";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Header from "@/components/layout/Header";
 
 const MembershipPage: React.FC = () => {
   const router = useRouter();
@@ -87,8 +89,9 @@ const MembershipPage: React.FC = () => {
   ];
 
   return (
-    <div className="py-12 bg-gradient-to-br from-slate-50 to-sky-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-gradient-to-br from-slate-50 to-sky-50">
+      <Header />
+      <div className="py-12 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Introduction Banner */}
         <section className="text-center mb-16">
           <h1 className="text-4xl font-bold text-secondary-900 mb-6">
@@ -238,6 +241,17 @@ const MembershipPage: React.FC = () => {
                 Submit Application
               </Button>
             </form>
+            <div className="mt-6 text-center gap-2">
+              <p className="text-md text-secondary-600 font-sans">
+                Already a member?
+                <Link
+                  href="/member-portal"
+                  className="text-primary-600 hover:underline font-sans hover:text-primary-700 ml-2"
+                >
+                  Click here to login
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

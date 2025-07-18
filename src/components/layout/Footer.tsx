@@ -26,10 +26,7 @@ const Footer: React.FC = () => {
         <div className="py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
-              <Link
-                href="/home"
-                className="text-lg font-semibold text-white mb-4"
-              >
+              <Link href="/" className="text-lg font-semibold text-white mb-4">
                 The Brotherhood Alliance
               </Link>
               <p className="text-secondary-300 text-sm max-w-md">

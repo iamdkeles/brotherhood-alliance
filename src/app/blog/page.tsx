@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { BlogPost } from "../../types";
+import Header from "@/components/layout/Header";
 
 const BlogPage: React.FC = () => {
   const blogPosts: BlogPost[] = [
@@ -63,8 +64,9 @@ const BlogPage: React.FC = () => {
   };
 
   return (
-    <div className="py-12 bg-gradient-to-br from-slate-50 to-sky-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-gradient-to-br from-slate-50 to-sky-50">
+      <Header />
+      <div className="py-12 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-secondary-900 mb-6">
             Insights & Reflections
