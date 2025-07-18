@@ -26,9 +26,12 @@ const Footer: React.FC = () => {
         <div className="py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
-              <h3 className="text-lg font-semibold text-white mb-4">
+              <Link
+                href="/home"
+                className="text-lg font-semibold text-white mb-4"
+              >
                 The Brotherhood Alliance
-              </h3>
+              </Link>
               <p className="text-secondary-300 text-sm max-w-md">
                 Building stronger communities through brotherhood, integrity,
                 and shared values. Join us in our mission to create lasting
