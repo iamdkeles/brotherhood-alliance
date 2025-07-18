@@ -1,0 +1,508 @@
+"use client";
+import React, { useState } from "react";
+import {
+  User,
+  Calendar,
+  Download,
+  MessageCircle,
+  Bell,
+  Settings,
+  LogOut,
+  FileText,
+  Users,
+  Shield,
+  Award,
+} from "lucide-react";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import CustomAlert from "@/components/ui/CustomAlert";
+
+const MemberPortal = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState<{
+    type: "error" | "success" | "info";
+    message: string;
+  } | null>(null);
+
+  const handleLogin = async (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) e.preventDefault();
+    setLoading(true);
+
+    const MOCK_CREDENTIALS = {
+      username: "member123",
+      password: "brotherhood2025",
+    };
+
+    // Simulate API delay
+    setTimeout(() => {
+      try {
+        // Check mock credentials
+        if (
+          credentials.username === MOCK_CREDENTIALS.username &&
+          credentials.password === MOCK_CREDENTIALS.password
+        ) {
+          // Mock successful login
+          setIsLoggedIn(true);
+          setAlert({ type: "success", message: "Login successful!" });
+        } else {
+          // Mock failed login
+          throw new Error("Invalid credentials");
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        setAlert({ type: "error", message: "Invalid username or password" });
+      } finally {
+        setLoading(false);
+      }
+    }, 1000); // 1 second delay to simulate network request
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setCredentials({ username: "", password: "" });
+    setActiveTab("dashboard");
+    setAlert({ type: "info", message: "You have successfully log out." });
+  };
+
+  // Mock data
+  const upcomingEvents = [
+    {
+      id: 1,
+      title: "Brotherhood Retreat",
+      date: "2025-07-15",
+      time: "9:00 AM",
+      location: "Mountain Lodge",
+    },
+    {
+      id: 2,
+      title: "Mentorship Circle",
+      date: "2025-06-20",
+      time: "7:00 PM",
+      location: "Chapter House",
+    },
+    {
+      id: 3,
+      title: "Leadership Summit",
+      date: "2025-07-30",
+      time: "10:00 AM",
+      location: "Grand Hall",
+    },
+  ];
+
+  const resources = [
+    { id: 1, title: "Brotherhood Handbook", type: "PDF", size: "2.4 MB" },
+    { id: 2, title: "Code of Ethics", type: "PDF", size: "854 KB" },
+    { id: 3, title: "Annual Report 2024", type: "PDF", size: "5.2 MB" },
+    { id: 4, title: "Member Directory", type: "Excel", size: "1.1 MB" },
+  ];
+
+  const forumPosts = [
+    {
+      id: 1,
+      title: "Welcome New Members - June 2025",
+      author: "Elder Marcus",
+      replies: 12,
+      time: "2 hours ago",
+    },
+    {
+      id: 2,
+      title: "Upcoming Retreat Preparation",
+      author: "Guardian James",
+      replies: 8,
+      time: "5 hours ago",
+    },
+    {
+      id: 3,
+      title: "Monthly Challenge Discussion",
+      author: "Brother Alex",
+      replies: 15,
+      time: "1 day ago",
+    },
+  ];
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-sky-50 flex items-center justify-center p-4">
+        <div className="max-w-md w-full">
+          {/* Logo/Header */}
+          <div className="text-center mb-8">
+            <div className="mx-auto h-16 w-16 bg-sky-600 rounded-full flex items-center justify-center mb-4">
+              <Shield className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">
+              THE BROTHERHOOD
+            </h1>
+            <h2 className="text-xl font-semibold text-sky-600">ALLIANCE</h2>
+            <p className="text-slate-600 mt-2">Member Portal Access</p>
+          </div>
+
+          {/* Login Form */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h3 className="text-xl font-semibold text-slate-900 mb-6 text-center">
+              Member Login
+            </h3>
+
+            <div className="space-y-6">
+              {alert && (
+                <CustomAlert type={alert.type} message={alert.message} />
+              )}
+              <Input
+                label="Username"
+                type="text"
+                value={credentials.username}
+                onChange={(e) =>
+                  setCredentials({ ...credentials, username: e.target.value })
+                }
+                placeholder="Enter your username"
+                required
+              />
+
+              <Input
+                label="Password"
+                type="password"
+                value={credentials.password}
+                onChange={(e) =>
+                  setCredentials({ ...credentials, password: e.target.value })
+                }
+                placeholder="Enter your password"
+                required
+              />
+
+              <Button
+                onClick={handleLogin}
+                className="w-full"
+                size="lg"
+                loading={loading}
+              >
+                {loading ? "Authenticating..." : "Login to Portal"}
+              </Button>
+            </div>
+
+            <div className="mt-6 text-center">
+              <p className="text-sm text-slate-600">
+                Forgot your credentials?
+                <a
+                  href="#"
+                  className="text-sky-600 hover:text-sky-700 font-medium ml-1"
+                >
+                  Contact Support
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header Section with User Info and Logout */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center">
+            <div className="h-10 w-10 bg-sky-600 rounded-lg flex items-center justify-center mr-3">
+              <Shield className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-slate-900">
+                Brotherhood Alliance
+              </h1>
+              <p className="text-xs text-slate-600">Member Portal</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" size="sm">
+              <Bell className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="sm">
+              <Settings className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleLogout}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar Navigation */}
+          <div className="lg:w-64">
+            <nav className="bg-white rounded-xl shadow-sm p-4">
+              <div className="space-y-2">
+                {[
+                  { id: "dashboard", label: "Dashboard", icon: Calendar },
+                  { id: "resources", label: "Resources", icon: Download },
+                  { id: "forum", label: "Forum", icon: MessageCircle },
+                  { id: "profile", label: "Profile", icon: User },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                        activeTab === item.id
+                          ? "bg-sky-50 text-sky-700 border-r-2 border-sky-600"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4 mr-3" />
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </nav>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1">
+            {activeTab === "dashboard" && (
+              <div className="space-y-6">
+                {/* Welcome Banner */}
+                <div className="bg-gradient-to-r from-sky-600 to-sky-700 rounded-xl p-6 text-white">
+                  <h2 className="text-2xl font-bold mb-2">
+                    Welcome back, Brother Marcus
+                  </h2>
+                  <p className="text-sky-100">
+                    Stay connected with your brotherhood and upcoming events.
+                  </p>
+                </div>
+
+                {/* Stats Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-white rounded-xl p-6 shadow-sm">
+                    <div className="flex items-center">
+                      <div className="p-2 bg-sky-100 rounded-lg">
+                        <Calendar className="h-6 w-6 text-sky-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm text-slate-600">
+                          Upcoming Events
+                        </p>
+                        <p className="text-2xl font-bold text-slate-900">3</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-xl p-6 shadow-sm">
+                    <div className="flex items-center">
+                      <div className="p-2 bg-green-100 rounded-lg">
+                        <Users className="h-6 w-6 text-green-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm text-slate-600">Active Members</p>
+                        <p className="text-2xl font-bold text-slate-900">247</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-xl p-6 shadow-sm">
+                    <div className="flex items-center">
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <Award className="h-6 w-6 text-purple-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm text-slate-600">Your Rank</p>
+                        <p className="text-2xl font-bold text-slate-900">
+                          Guardian
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Upcoming Events */}
+                <div className="bg-white rounded-xl shadow-sm">
+                  <div className="p-6 border-b border-slate-200">
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      Upcoming Events
+                    </h3>
+                  </div>
+                  <div className="p-6">
+                    <div className="space-y-4">
+                      {upcomingEvents.map((event) => (
+                        <div
+                          key={event.id}
+                          className="flex items-center justify-between p-4 bg-slate-50 rounded-lg"
+                        >
+                          <div>
+                            <h4 className="font-medium text-slate-900">
+                              {event.title}
+                            </h4>
+                            <p className="text-sm text-slate-600">
+                              {event.date} at {event.time}
+                            </p>
+                            <p className="text-sm text-slate-500">
+                              {event.location}
+                            </p>
+                          </div>
+                          <Button size="sm">RSVP</Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "resources" && (
+              <div className="space-y-6">
+                <div className="bg-white rounded-xl shadow-sm">
+                  <div className="p-6 border-b border-slate-200">
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      Resource Downloads
+                    </h3>
+                    <p className="text-slate-600">
+                      Access important documents and materials
+                    </p>
+                  </div>
+                  <div className="p-6">
+                    <div className="space-y-4">
+                      {resources.map((resource) => (
+                        <div
+                          key={resource.id}
+                          className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="flex items-center">
+                            <div className="p-2 bg-sky-100 rounded-lg mr-4">
+                              <FileText className="h-5 w-5 text-sky-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-slate-900">
+                                {resource.title}
+                              </h4>
+                              <p className="text-sm text-slate-600">
+                                {resource.type} • {resource.size}
+                              </p>
+                            </div>
+                          </div>
+                          <Button variant="outline" size="sm">
+                            <Download className="h-4 w-4 mr-2" />
+                            Download
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "forum" && (
+              <div className="space-y-6">
+                <div className="bg-white rounded-xl shadow-sm">
+                  <div className="p-6 border-b border-slate-200">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-900">
+                          Internal Forum
+                        </h3>
+                        <p className="text-slate-600">
+                          Connect and discuss with fellow members
+                        </p>
+                      </div>
+                      <Button>New Post</Button>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="space-y-4">
+                      {forumPosts.map((post) => (
+                        <div
+                          key={post.id}
+                          className="p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
+                        >
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h4 className="font-medium text-slate-900 mb-2">
+                                {post.title}
+                              </h4>
+                              <p className="text-sm text-slate-600">
+                                By {post.author} • {post.time}
+                              </p>
+                            </div>
+                            <div className="text-sm text-slate-500">
+                              {post.replies} replies
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "profile" && (
+              <div className="space-y-6">
+                <div className="bg-white rounded-xl shadow-sm">
+                  <div className="p-6 border-b border-slate-200">
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      Member Profile
+                    </h3>
+                    <p className="text-slate-600">
+                      Manage your personal information
+                    </p>
+                  </div>
+                  <div className="p-6">
+                    <div className="space-y-6">
+                      <div className="flex items-center space-x-6">
+                        <div className="h-20 w-20 bg-sky-600 rounded-full flex items-center justify-center">
+                          <User className="h-10 w-10 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-semibold text-slate-900">
+                            Marcus Thompson
+                          </h4>
+                          <p className="text-slate-600">
+                            Guardian • Member since 2019
+                          </p>
+                          <p className="text-sm text-slate-500">
+                            Chapter: Northern Division
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Input
+                          label="Full Name"
+                          value="Marcus Thompson"
+                          readOnly
+                        />
+                        <Input
+                          label="Email"
+                          value="marcus.thompson@email.com"
+                        />
+                        <Input label="Phone" value="+1 (555) 123-4567" />
+                        <Input
+                          label="Member ID"
+                          value="BA-2019-0147"
+                          readOnly
+                        />
+                      </div>
+
+                      <div className="flex justify-end space-x-4">
+                        <Button variant="outline">Cancel</Button>
+                        <Button>Save Changes</Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MemberPortal;
