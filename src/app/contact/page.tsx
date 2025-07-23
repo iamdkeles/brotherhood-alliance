@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../../components/ui/Input";
 import TextArea from "../../components/ui/TextArea";
@@ -9,6 +9,11 @@ import { ContactForm } from "../../types";
 import Header from "@/components/layout/Header";
 
 const ContactPage: React.FC = () => {
+  const [alert, setAlert] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -17,11 +22,33 @@ const ContactPage: React.FC = () => {
   } = useForm<ContactForm>();
 
   const onSubmit = async (data: ContactForm) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("Contact form submitted:", data);
-    alert("Message sent successfully! We will get back to you soon.");
-    reset();
+    setAlert(null);
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        setAlert({
+          type: "success",
+          message: "Your message was sent successfully!",
+        });
+        reset(); // Reset form after successful submission
+      } else {
+        setAlert({
+          type: "error",
+          message: "Failed to send message. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+      setAlert({
+        type: "error",
+        message: "An error occurred. Please try again.",
+      });
+    }
   };
 
   return (
@@ -37,6 +64,50 @@ const ContactPage: React.FC = () => {
             hear from you. Reach out and we&apos;ll respond as soon as possible.
           </p>
         </div>
+
+        {/* Alert Message */}
+        {alert && (
+          <div
+            className={`mb-6 p-4 rounded-md ${
+              alert.type === "success"
+                ? "bg-green-50 border border-green-200 text-green-800"
+                : "bg-red-50 border border-red-200 text-red-800"
+            }`}
+          >
+            <div className="flex">
+              <div className="flex-shrink-0">
+                {alert.type === "success" ? (
+                  <svg
+                    className="h-5 w-5 text-green-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                )}
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium">{alert.message}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
@@ -127,12 +198,12 @@ const ContactPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Optional: Map placeholder */}
+            {/* Map placeholder */}
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-secondary-900 mb-4">
                 Location
               </h3>
-              <div className="bg-secondary-100 rounded-lg h-64 flex items-center justify-center">
+              <div className="bg-secondary-100 rounded-lg h-64 flex items-center justify-center cursor-pointer hover:bg-secondary-200 transition-colors">
                 <div className="text-center">
                   <svg
                     className="w-12 h-12 text-secondary-400 mx-auto mb-2"

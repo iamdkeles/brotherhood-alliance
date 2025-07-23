@@ -17,7 +17,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "The Brotherhood Alliance",
-  description: "",
+  description: "Unity & Support for Brothers",
+  manifest: "/manifest.json",
+  themeColor: "#000000",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Brotherhood Alliance",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/icons/icon-192x192.png",
+  },
 };
 
 export default function RootLayout({
