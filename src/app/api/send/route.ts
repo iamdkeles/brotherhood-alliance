@@ -1,9 +1,9 @@
 import ContactUsEmailTemplate from "@/app/contact/ContactUsEmailTemplate";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: Request) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
   try {
     const {
       firstName,
@@ -14,6 +14,7 @@ export async function POST(req: Request) {
       message,
       agreeToTerms,
     } = await req.json();
+
     const reactElement = await ContactUsEmailTemplate({
       firstName,
       lastName,
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
       message,
       agreeToTerms,
     });
+
     const { data, error } = await resend.emails.send({
       from: "Brotherhood Alliance <olabiyioladele@gmail.com>",
       to: ["olabiyioladele@gmail.com"],
