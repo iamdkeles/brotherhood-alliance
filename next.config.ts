@@ -1,13 +1,11 @@
 // next.config.mjs
 import withPWAConfig from "next-pwa";
 
-const isDev = process.env.NODE_ENV === "development";
-
 const withPWA = withPWAConfig({
   dest: "public",
   register: true,
   skipWaiting: true,
-  disable: isDev,
+  disable: process.env.NODE_ENV === "development",
 
   // Vercel-specific settings
   runtimeCaching: [
