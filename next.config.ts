@@ -1,39 +1,64 @@
+// next.config.mjs
+import withPWAConfig from "next-pwa";
+
 const isDev = process.env.NODE_ENV === "development";
-const isProd = process.env.NODE_ENV === "production";
+
+const withPWA = withPWAConfig({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  disable: isDev,
+
+  // Vercel-specific settings
+  runtimeCaching: [
+    {
+      urlPattern: /^https?.*/,
+      handler: "NetworkFirst",
+      options: {
+        cacheName: "offlineCache",
+        expiration: {
+          maxEntries: 200,
+        },
+      },
+    },
+  ],
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-};
 
-const config = async () => {
-  const withPWAConfig = (await import("next-pwa")).default;
+  // Important for Vercel
+  trailingSlash: false,
 
-  const withPWA = withPWAConfig({
-    dest: "public",
-    register: true,
-    skipWaiting: true,
-    disable: isDev,
-
-    // Production-only settings
-    ...(isProd && {
-      runtimeCaching: [
-        {
-          urlPattern: /^https?.*/,
-          handler: "NetworkFirst",
-          options: {
-            cacheName: "offlineCache",
-            expiration: {
-              maxEntries: 200,
-            },
+  // Ensure proper headers
+  async headers() {
+    return [
+      {
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
           },
-        },
-      ],
-    }),
-  });
-
-  return withPWA(nextConfig);
+          {
+            key: "Service-Worker-Allowed",
+            value: "/",
+          },
+        ],
+      },
+      {
+        source: "/manifest.json",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
 };
 
-export default config;
+export default withPWA(nextConfig);
