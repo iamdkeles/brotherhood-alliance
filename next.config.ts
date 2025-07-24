@@ -1,4 +1,3 @@
-// next.config.mjs
 import withPWAConfig from "next-pwa";
 
 const withPWA = withPWAConfig({
@@ -6,8 +5,6 @@ const withPWA = withPWAConfig({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
-
-  // Vercel-specific settings
   runtimeCaching: [
     {
       urlPattern: /^https?.*/,
@@ -25,12 +22,18 @@ const withPWA = withPWAConfig({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
 
-  // Important for Vercel
+  // ⚠️ REMOVE these:
+  // swcMinify: true,
+  // experimental: { turbo: { rules: { } } }
+
+  // ✅ UPDATE for Turbopack (optional, if you're using it):
+  // turbopack: {
+  //   rules: {}
+  // },
+
   trailingSlash: false,
 
-  // Ensure proper headers
   async headers() {
     return [
       {
