@@ -17,7 +17,7 @@ import {
 
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import Login from "../(auth)/login";
+import Login from "../(auth)/login/page";
 
 export default function MemberPortalPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
