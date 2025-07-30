@@ -9,6 +9,7 @@ import { MembershipApplication } from "../../types/index";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
+import CheckCircleIcon from "@/components/icons/check-circle-icon";
 
 const MembershipPage: React.FC = () => {
   const router = useRouter();
@@ -114,17 +115,7 @@ const MembershipPage: React.FC = () => {
               <ul className="space-y-4">
                 {benefits.map((benefit, index) => (
                   <li key={index} className="flex items-start">
-                    <svg
-                      className="w-6 h-6 text-primary-600 mt-1 mr-3 flex-shrink-0"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    <CheckCircleIcon />
                     <span className="text-secondary-600">{benefit}</span>
                   </li>
                 ))}
@@ -139,17 +130,7 @@ const MembershipPage: React.FC = () => {
               <ul className="space-y-4">
                 {requirements.map((requirement, index) => (
                   <li key={index} className="flex items-start">
-                    <svg
-                      className="w-6 h-6 text-primary-600 mt-1 mr-3 flex-shrink-0"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                    <CheckCircleIcon />
                     <span className="text-secondary-600">{requirement}</span>
                   </li>
                 ))}

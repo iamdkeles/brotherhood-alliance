@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
               <Link href="/" className="text-lg font-semibold text-white mb-4">
                 The Brotherhood Alliance
               </Link>
-              <p className="text-secondary-300 text-sm max-w-md">
+              <p className="text-secondary-500 text-sm max-w-md">
                 Building stronger communities through brotherhood, integrity,
                 and shared values. Join us in our mission to create lasting
                 positive impact.
@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
                   <li key={item}>
                     <Link
                       href={`/${item.toLowerCase()}`}
-                      className="text-secondary-300 hover:text-white text-sm"
+                      className="text-secondary-500 hover:text-white text-sm"
                     >
                       {item}
                     </Link>
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="text-secondary-400 hover:text-white"
+                    className="text-secondary-600 hover:text-white"
                   >
                     <span className="sr-only">{item.name}</span>
                     <svg
@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="mt-8 border-t border-secondary-700 pt-8">
-            <p className="text-secondary-400 text-sm text-center">
+            <p className="text-secondary-600 text-sm text-center">
               © 2025 The Brotherhood Alliance. All rights reserved.
             </p>
           </div>

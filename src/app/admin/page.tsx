@@ -10,17 +10,15 @@ import {
   Settings,
   ChevronDown,
 } from "lucide-react";
-import LoginForm from "@/app/(auth)/admin-login-form";
-import ApplicationsPanel from "../application-panel";
-import DashboardOverview from "../dashboard-overview";
-import MemberManagement from "../member-management";
-import { AnalyticsPanel } from "../panel-components";
-import SidebarNavigation from "../sidebar-navigation";
-import SystemSettingsPanel from "../system-setting-panel";
-import { useDashboardData } from "../hooks/adminUseDashboardData";
 
-// import { formatStats } from "../utils/form-stats";
-// import { formatActivities } from "../utils/form-recent-activities";
+import ApplicationsPanel from "./components/application-panel";
+import DashboardOverview from "./components/dashboard-overview";
+import MemberManagement from "./components/member-management";
+import { AnalyticsPanel } from "./components/panel-components";
+import SidebarNavigation from "./childComponents/sidebar-navigation";
+import SystemSettingsPanel from "./components/system-setting-panel";
+import { useDashboardData } from "./hooks/adminUseDashboardData";
+import Login from "@/app/(auth)/login";
 
 // Loading Spinner
 const LoadingSpinner: React.FC = () => (
@@ -134,15 +132,48 @@ const UserMenu: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 
 const AdminDashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Check authentication on component mount
+  useEffect(() => {
+    console.log("Checking admin authentication...");
+    const adminLoggedIn = localStorage.getItem("adminLoggedIn") === "true";
+    console.log("Admin logged in status:", adminLoggedIn);
+    setIsAuthenticated(adminLoggedIn);
+    setIsInitializing(false);
+  }, []);
+
+  const handleAdminLogin = (isAuth: boolean) => {
+    console.log("Admin login handler called with:", isAuth);
+    setIsAuthenticated(isAuth);
+  };
+
+  const handleLogout = () => {
+    console.log("Admin logging out...");
+    localStorage.removeItem("adminLoggedIn");
+    setIsAuthenticated(false);
+  };
 
   const { data, isLoading, error, refetch } = useDashboardData(
     isAuthenticated && activeTab === "dashboard"
   );
 
+  // Show loading while initializing authentication
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Initializing...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
-    return <LoginForm setIsAuthenticated={setIsAuthenticated} />;
+    return <Login onAdminLoginSuccess={handleAdminLogin} defaultMode="admin" />;
   }
 
   return (
@@ -181,7 +212,7 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             <div className="flex items-center">
-              <UserMenu onLogout={() => setIsAuthenticated(false)} />
+              <UserMenu onLogout={handleLogout} />
             </div>
           </div>
         </div>

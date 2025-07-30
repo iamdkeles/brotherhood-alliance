@@ -1,5 +1,5 @@
 import React from "react";
-import { DashboardStat } from "./types/admin-dashboard-api";
+import { DashboardStat } from "../types/admin-dashboard-api";
 
 interface DashboardOverviewProps {
   stats: DashboardStat[];

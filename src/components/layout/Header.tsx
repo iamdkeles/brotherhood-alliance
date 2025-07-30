@@ -63,11 +63,11 @@ const Header: React.FC = () => {
             ))}
           </div>
 
-          {/* Desktop Member Portal Button */}
+          {/* Desktop Member Portal Button - Fixed to use /member-portal */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Link href="/member-portal">
+            <Link href="/member">
               <Button variant="outline" size="sm">
-                Member Portal
+                Login Portal
               </Button>
             </Link>
           </div>
@@ -134,11 +134,11 @@ const Header: React.FC = () => {
                 </Link>
               ))}
               <Link
-                href="/member-portal"
+                href="/login"
                 className="block py-2 pl-3 pr-4 text-base font-medium text-secondary-500 hover:bg-secondary-50 hover:text-secondary-700 transition-colors duration-200"
                 onClick={handleMobileMenuClose}
               >
-                Member Portal
+                Login Portal
               </Link>
             </div>
           </div>

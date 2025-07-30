@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+
+import { useEffect, useState } from "react";
 import {
   User,
   Calendar,
@@ -13,61 +14,66 @@ import {
   Shield,
   Award,
 } from "lucide-react";
+
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import CustomAlert from "@/components/ui/CustomAlert";
+import Login from "../(auth)/login";
 
-const MemberPortal = () => {
+export default function MemberPortalPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
+
+  // Profile form state
+  const [profileData, setProfileData] = useState({
+    fullName: "Marcus Thompson",
+    email: "marcus.thompson@email.com",
+    phone: "+1 (555) 123-4567",
+    memberId: "BA-2019-0147",
   });
-  const [loading, setLoading] = useState(false);
-  const [alert, setAlert] = useState<{
-    type: "error" | "success" | "info";
-    message: string;
-  } | null>(null);
 
-  const handleLogin = async (e?: React.MouseEvent<HTMLButtonElement>) => {
-    if (e) e.preventDefault();
-    setLoading(true);
+  useEffect(() => {
+    // Check if user is logged in
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    setIsLoggedIn(loggedIn);
+    setIsLoading(false);
+  }, []);
 
-    const MOCK_CREDENTIALS = {
-      username: "member123",
-      password: "brotherhood2025",
-    };
-
-    // Simulate API delay
-    setTimeout(() => {
-      try {
-        // Check mock credentials
-        if (
-          credentials.username === MOCK_CREDENTIALS.username &&
-          credentials.password === MOCK_CREDENTIALS.password
-        ) {
-          // Mock successful login
-          setIsLoggedIn(true);
-          setAlert({ type: "success", message: "Login successful!" });
-        } else {
-          // Mock failed login
-          throw new Error("Invalid credentials");
-        }
-      } catch (err) {
-        console.error("Login error:", err);
-        setAlert({ type: "error", message: "Invalid username or password" });
-      } finally {
-        setLoading(false);
-      }
-    }, 1000); // 1 second delay to simulate network request
+  const handleLoginSuccess = () => {
+    localStorage.setItem("loggedIn", "true");
+    setIsLoggedIn(true);
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("loggedIn");
     setIsLoggedIn(false);
-    setCredentials({ username: "", password: "" });
     setActiveTab("dashboard");
-    setAlert({ type: "info", message: "You have successfully log out." });
+  };
+
+  const handleProfileChange = (
+    field: keyof typeof profileData,
+    value: string
+  ) => {
+    setProfileData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSaveProfile = () => {
+    // Here you would typically save to your backend
+    console.log("Saving profile:", profileData);
+    // Show success message or handle response
+  };
+
+  const handleCancelProfile = () => {
+    // Reset to original values
+    setProfileData({
+      fullName: "Marcus Thompson",
+      email: "marcus.thompson@email.com",
+      phone: "+1 (555) 123-4567",
+      memberId: "BA-2019-0147",
+    });
   };
 
   // Mock data
@@ -75,21 +81,21 @@ const MemberPortal = () => {
     {
       id: 1,
       title: "Brotherhood Retreat",
-      date: "2025-07-15",
+      date: "2025-08-15",
       time: "9:00 AM",
       location: "Mountain Lodge",
     },
     {
       id: 2,
       title: "Mentorship Circle",
-      date: "2025-06-20",
+      date: "2025-08-20",
       time: "7:00 PM",
       location: "Chapter House",
     },
     {
       id: 3,
       title: "Leadership Summit",
-      date: "2025-07-30",
+      date: "2025-09-10",
       time: "10:00 AM",
       location: "Grand Hall",
     },
@@ -105,7 +111,7 @@ const MemberPortal = () => {
   const forumPosts = [
     {
       id: 1,
-      title: "Welcome New Members - June 2025",
+      title: "Welcome New Members - July 2025",
       author: "Elder Marcus",
       replies: 12,
       time: "2 hours ago",
@@ -126,78 +132,20 @@ const MemberPortal = () => {
     },
   ];
 
-  if (!isLoggedIn) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-sky-50 flex items-center justify-center p-4">
-        <div className="max-w-md w-full">
-          {/* Logo/Header */}
-          <div className="text-center mb-8">
-            <div className="mx-auto h-16 w-16 bg-sky-600 rounded-full flex items-center justify-center mb-4">
-              <Shield className="h-8 w-8 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">
-              THE BROTHERHOOD
-            </h1>
-            <h2 className="text-xl font-semibold text-sky-600">ALLIANCE</h2>
-            <p className="text-slate-600 mt-2">Member Portal Access</p>
-          </div>
-
-          {/* Login Form */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h3 className="text-xl font-semibold text-slate-900 mb-6 text-center">
-              Member Login
-            </h3>
-
-            <div className="space-y-6">
-              {alert && (
-                <CustomAlert type={alert.type} message={alert.message} />
-              )}
-              <Input
-                label="Username"
-                type="text"
-                value={credentials.username}
-                onChange={(e) =>
-                  setCredentials({ ...credentials, username: e.target.value })
-                }
-                placeholder="Enter your username"
-                required
-              />
-
-              <Input
-                label="Password"
-                type="password"
-                value={credentials.password}
-                onChange={(e) =>
-                  setCredentials({ ...credentials, password: e.target.value })
-                }
-                placeholder="Enter your password"
-                required
-              />
-
-              <Button
-                onClick={handleLogin}
-                className="w-full"
-                size="lg"
-                loading={loading}
-              >
-                {loading ? "Authenticating..." : "Login to Portal"}
-              </Button>
-            </div>
-
-            <div className="mt-6 text-center">
-              <p className="text-sm text-slate-600">
-                Forgot your credentials?
-                <a
-                  href="#"
-                  className="text-sky-600 hover:text-sky-700 font-medium ml-1"
-                >
-                  Contact Support
-                </a>
-              </p>
-            </div>
-          </div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <Login onMemberLoginSuccess={handleLoginSuccess} defaultMode="member" />
     );
   }
 
@@ -219,16 +167,19 @@ const MemberPortal = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm">
+            <button className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
               <Bell className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm">
+            </button>
+            <button className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
               <Settings className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleLogout}>
+            </button>
+            <button
+              onClick={handleLogout}
+              className="flex items-center px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-300 hover:border-slate-400 rounded-lg transition-colors"
+            >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -345,7 +296,9 @@ const MemberPortal = () => {
                               {event.location}
                             </p>
                           </div>
-                          <Button size="sm">RSVP</Button>
+                          <button className="px-4 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition-colors">
+                            RSVP
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -385,10 +338,10 @@ const MemberPortal = () => {
                               </p>
                             </div>
                           </div>
-                          <Button variant="outline" size="sm">
+                          <button className="flex items-center px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-300 hover:border-slate-400 rounded-lg transition-colors">
                             <Download className="h-4 w-4 mr-2" />
                             Download
-                          </Button>
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -410,7 +363,9 @@ const MemberPortal = () => {
                           Connect and discuss with fellow members
                         </p>
                       </div>
-                      <Button>New Post</Button>
+                      <button className="px-4 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition-colors">
+                        New Post
+                      </button>
                     </div>
                   </div>
                   <div className="p-6">
@@ -460,7 +415,7 @@ const MemberPortal = () => {
                         </div>
                         <div>
                           <h4 className="text-xl font-semibold text-slate-900">
-                            Marcus Thompson
+                            {profileData.fullName}
                           </h4>
                           <p className="text-slate-600">
                             Guardian • Member since 2019
@@ -472,26 +427,69 @@ const MemberPortal = () => {
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Input
-                          label="Full Name"
-                          value="Marcus Thompson"
-                          readOnly
-                        />
-                        <Input
-                          label="Email"
-                          value="marcus.thompson@email.com"
-                        />
-                        <Input label="Phone" value="+1 (555) 123-4567" />
-                        <Input
-                          label="Member ID"
-                          value="BA-2019-0147"
-                          readOnly
-                        />
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Full Name
+                          </label>
+                          <Input
+                            type="text"
+                            value={profileData.fullName}
+                            onChange={(e) =>
+                              handleProfileChange("fullName", e.target.value)
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Email
+                          </label>
+                          <Input
+                            type="email"
+                            value={profileData.email}
+                            onChange={(e) =>
+                              handleProfileChange("email", e.target.value)
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Phone
+                          </label>
+                          <Input
+                            type="tel"
+                            value={profileData.phone}
+                            onChange={(e) =>
+                              handleProfileChange("phone", e.target.value)
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Member ID
+                          </label>
+                          <Input
+                            type="text"
+                            value={profileData.memberId}
+                            readOnly
+                            className="bg-gray-50"
+                          />
+                        </div>
                       </div>
 
                       <div className="flex justify-end space-x-4">
-                        <Button variant="outline">Cancel</Button>
-                        <Button>Save Changes</Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={handleCancelProfile}
+                        >
+                          Cancel
+                        </Button>
+                        <button
+                          onClick={handleSaveProfile}
+                          className="px-4 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition-colors"
+                        >
+                          Save Changes
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -503,6 +501,4 @@ const MemberPortal = () => {
       </div>
     </div>
   );
-};
-
-export default MemberPortal;
+}
