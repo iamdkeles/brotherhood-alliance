@@ -18,7 +18,7 @@ import { AnalyticsPanel } from "./components/panel-components";
 import SidebarNavigation from "./childComponents/sidebar-navigation";
 import SystemSettingsPanel from "./components/system-setting-panel";
 import { useDashboardData } from "./hooks/adminUseDashboardData";
-import Login from "@/app/(auth)/login/page";
+import Login from "@/components/Login";
 
 // Loading Spinner
 const LoadingSpinner: React.FC = () => (
