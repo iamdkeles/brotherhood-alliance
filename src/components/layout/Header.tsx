@@ -65,7 +65,7 @@ const Header: React.FC = () => {
 
           {/* Desktop Member Portal Button - Fixed to use /member-portal */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Link href="/member">
+            <Link href="/login">
               <Button variant="outline" size="sm">
                 Login Portal
               </Button>

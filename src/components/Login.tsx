@@ -50,21 +50,14 @@ const Login: React.FC<LoginProps> = ({
         ) {
           setAlert({ type: "success", message: "Login successful!" });
 
-          // Set localStorage for persistence
-          // Simulate a successful login action
-          if (loginMode === "admin") {
-            localStorage.setItem("adminLoggedIn", "true");
-          } else {
-            localStorage.setItem("memberLoggedIn", "true");
-          }
-
+          // Call the appropriate callback immediately after successful login
           setTimeout(() => {
             if (loginMode === "member" && onMemberLoginSuccess) {
               onMemberLoginSuccess();
             } else if (loginMode === "admin" && onAdminLoginSuccess) {
               onAdminLoginSuccess(true);
             }
-          }, 1000);
+          }, 500); // Reduced delay for better UX
         } else {
           throw new Error("Invalid credentials");
         }
@@ -214,6 +207,27 @@ const Login: React.FC<LoginProps> = ({
                 ? "Authenticating..."
                 : `Login to ${isMemberMode ? "Member" : "Admin"} Portal`}
             </button>
+
+            {/* Debug info to help troubleshoot */}
+            <div className="mt-4 p-3 bg-gray-100 rounded text-xs text-gray-600">
+              <p>
+                <strong>Debug Info:</strong>
+              </p>
+              <p>Mode: {loginMode}</p>
+              <p>
+                Member callback:{" "}
+                {onMemberLoginSuccess ? "✓ Provided" : "✗ Missing"}
+              </p>
+              <p>
+                Admin callback:{" "}
+                {onAdminLoginSuccess ? "✓ Provided" : "✗ Missing"}
+              </p>
+              <p className="mt-2">
+                <strong>Test Credentials:</strong>
+              </p>
+              <p>Member: member123 / brotherhood2025</p>
+              <p>Admin: admin / admin123</p>
+            </div>
           </div>
 
           <div className="mt-6 text-center">

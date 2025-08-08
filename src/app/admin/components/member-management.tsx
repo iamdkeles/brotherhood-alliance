@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Table, { Column } from "@/components/ui/Table";
 import Button from "@/components/ui/Button";
 
@@ -11,29 +12,25 @@ interface Member {
 }
 
 const MemberManagement: React.FC = () => {
-  const memberData: Member[] = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      status: "Active",
-      joined: "2023-01-15",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      status: "Inactive",
-      joined: "2023-02-20",
-    },
-    {
-      id: 3,
-      name: "Bob Johnson",
-      email: "bob@example.com",
-      status: "Active",
-      joined: "2023-03-10",
-    },
-  ];
+  const [memberData, setMemberData] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const res = await fetch(
+          "https://brotherhood-production.up.railway.app/api/members"
+        );
+        const data = await res.json();
+        setMemberData(data);
+      } catch (error) {
+        console.error("Error fetching members:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMembers();
+  }, []);
 
   const columns: Column<Member>[] = [
     {
@@ -72,22 +69,13 @@ const MemberManagement: React.FC = () => {
       key: "actions",
       title: "Actions",
       render: (_, row) => (
-        <div className="flex space-x-2">
-          <button
-            onClick={() => handleEdit(row.id)}
-            className="text-blue-600 hover:text-blue-800 font-medium"
-          >
-            Edit
-          </button>
-          {/* <button
-            onClick={() => handleDelete(row.id)}
-            className="text-red-600 hover:text-red-800 font-medium"
-          >
-            Delete
-          </button> */}
-        </div>
+        <button
+          onClick={() => handleEdit(row.id)}
+          className="text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Edit
+        </button>
       ),
-      sortable: false,
     },
   ];
 
@@ -95,15 +83,11 @@ const MemberManagement: React.FC = () => {
     alert(`Edit member with ID: ${id}`);
   };
 
-  // const handleDelete = (id: number) => {
-  //   if (confirm(`Are you sure you want to delete member with ID: ${id}?`)) {
-  //     alert(`Delete member with ID: ${id}`);
-  //   }
-  // };
-
   const handleAddMember = () => {
     alert("Add Member clicked");
   };
+
+  if (loading) return <p className="text-center py-6">Loading members...</p>;
 
   return (
     <div className="space-y-6">
@@ -113,7 +97,6 @@ const MemberManagement: React.FC = () => {
           Add Member
         </Button>
       </div>
-
       <div className="bg-white">
         <div className="overflow-x-auto">
           <Table<Member> data={memberData} columns={columns} />
