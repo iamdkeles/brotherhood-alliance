@@ -96,8 +96,9 @@ const MemberManagement: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-slate-900">Member Management</h2>
-        <Button size="md" onClick={handleAddMember}>
-          Add Member
+        <Button size="md" className="" onClick={handleAddMember}>
+          <span className="sm:hidden">+</span>
+          <span className="hidden sm:inline">Add Member</span>
         </Button>
       </div>
       <div className="bg-white">
