@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Table, { Column } from "@/components/ui/Table";
 import Button from "@/components/ui/Button";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 interface Member {
   id: number;
@@ -87,7 +88,9 @@ const MemberManagement: React.FC = () => {
     alert("Add Member clicked");
   };
 
-  if (loading) return <p className="text-center py-6">Loading members...</p>;
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="space-y-6">
