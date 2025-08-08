@@ -1,4 +1,3 @@
-// src/components/Login.tsx (create this new file)
 "use client";
 import React, { useState } from "react";
 import { Shield, User, UserCheck } from "lucide-react";
@@ -103,7 +102,7 @@ const Login: React.FC<LoginProps> = ({
           >
             <Shield className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
             THE BROTHERHOOD
           </h1>
           <h2
