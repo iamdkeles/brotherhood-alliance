@@ -8,6 +8,199 @@ import Button from "../../components/ui/Button";
 import { ContactForm } from "../../types";
 import Header from "@/components/layout/Header";
 
+// -------------------------
+// Alert Component
+// -------------------------
+const AlertMessage: React.FC<{
+  type: "success" | "error";
+  message: string;
+}> = ({ type, message }) => {
+  const styles =
+    type === "success"
+      ? "bg-green-50 border border-green-200 text-green-800"
+      : "bg-red-50 border border-red-200 text-red-800";
+
+  const icon =
+    type === "success" ? (
+      <svg
+        className="h-5 w-5 text-green-400"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 
+             7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 
+             0l4-4z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ) : (
+      <svg
+        className="h-5 w-5 text-red-400"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 
+             16zM8.707 7.293a1 1 0 00-1.414 
+             1.414L8.586 10l-1.293 
+             1.293a1 1 0 101.414 
+             1.414L10 11.414l1.293 
+             1.293a1 1 0 001.414-1.414L11.414 
+             10l1.293-1.293a1 1 0 00-1.414-1.414L10 
+             8.586 8.707 7.293z"
+          clipRule="evenodd"
+        />
+      </svg>
+    );
+
+  return (
+    <div className={`mb-6 p-4 rounded-md ${styles}`}>
+      <div className="flex">
+        <div className="flex-shrink-0">{icon}</div>
+        <div className="ml-3">
+          <p className="text-sm font-medium">{message}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// -------------------------
+// Contact Info Section
+// -------------------------
+const ContactInfoSection: React.FC = () => (
+  <div>
+    <h2 className="text-2xl font-bold text-secondary-900 mb-6">Get in Touch</h2>
+    <div className="space-y-6">
+      {/* Address */}
+      <InfoItem
+        icon={
+          <svg
+            className="w-6 h-6 text-primary-600 mt-1 mr-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.05 4.05a7 7 0 119.9 9.9L10 
+                 18.9l-4.95-4.95a7 7 0 010-9.9zM10 
+                 11a2 2 0 100-4 2 2 0 000 4z"
+              clipRule="evenodd"
+            />
+          </svg>
+        }
+        title="Address"
+        text={
+          <>
+            123 Brotherhood Street
+            <br />
+            Unity City, UC 12345
+            <br />
+            United States
+          </>
+        }
+      />
+
+      {/* Phone */}
+      <InfoItem
+        icon={
+          <svg
+            className="w-6 h-6 text-primary-600 mt-1 mr-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M2 3a1 1 0 011-1h2.153a1 1 0 
+                     01.986.836l.74 4.435a1 1 0 
+                     01-.54 1.06l-1.548.773a11.037 
+                     11.037 0 006.105 6.105l.774-1.548a1 
+                     1 0 011.059-.54l4.435.74a1 1 0 
+                     01.836.986V17a1 1 0 01-1 1h-2C7.82 
+                     18 2 12.18 2 5V3z"
+            />
+          </svg>
+        }
+        title="Phone"
+        text="+1 (555) 123-4567"
+      />
+
+      {/* Email */}
+      <InfoItem
+        icon={
+          <svg
+            className="w-6 h-6 text-primary-600 mt-1 mr-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M2.003 5.884L10 9.882l7.997-3.998A2 
+                     2 0 0016 4H4a2 2 0 
+                     00-1.997 1.884z"
+            />
+            <path
+              d="M18 8.118l-8 4-8-4V14a2 
+                     2 0 002 2h12a2 2 0 002-2V8.118z"
+            />
+          </svg>
+        }
+        title="Email"
+        text="info@brotherhoodalliance.org"
+      />
+
+      {/* Office Hours */}
+      <InfoItem
+        icon={
+          <svg
+            className="w-6 h-6 text-primary-600 mt-1 mr-3"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 
+                 000 16zm1-12a1 1 0 10-2 0v4a1 
+                 1 0 00.293.707l2.828 
+                 2.829a1 1 0 101.415-1.415L11 
+                 9.586V6z"
+              clipRule="evenodd"
+            />
+          </svg>
+        }
+        title="Office Hours"
+        text={
+          <>
+            Monday - Friday: 9:00 AM - 6:00 PM
+            <br />
+            Saturday: 10:00 AM - 4:00 PM
+            <br />
+            Sunday: Closed
+          </>
+        }
+      />
+    </div>
+  </div>
+);
+
+const InfoItem: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  text: React.ReactNode;
+}> = ({ icon, title, text }) => (
+  <div className="flex items-start">
+    {icon}
+    <div>
+      <h3 className="font-semibold text-secondary-900">{title}</h3>
+      <p className="text-secondary-600">{text}</p>
+    </div>
+  </div>
+);
+
+// -------------------------
+// Main Component
+// -------------------------
 const ContactPage: React.FC = () => {
   const [alert, setAlert] = useState<{
     type: "success" | "error";
@@ -35,7 +228,7 @@ const ContactPage: React.FC = () => {
           type: "success",
           message: "Your message was sent successfully!",
         });
-        reset(); // Reset form after successful submission
+        reset();
       } else {
         setAlert({
           type: "error",
@@ -65,165 +258,10 @@ const ContactPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Alert Message */}
-        {alert && (
-          <div
-            className={`mb-6 p-4 rounded-md ${
-              alert.type === "success"
-                ? "bg-green-50 border border-green-200 text-green-800"
-                : "bg-red-50 border border-red-200 text-red-800"
-            }`}
-          >
-            <div className="flex">
-              <div className="flex-shrink-0">
-                {alert.type === "success" ? (
-                  <svg
-                    className="h-5 w-5 text-green-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-5 w-5 text-red-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
-              </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium">{alert.message}</p>
-              </div>
-            </div>
-          </div>
-        )}
+        {alert && <AlertMessage type={alert.type} message={alert.message} />}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div>
-            <h2 className="text-2xl font-bold text-secondary-900 mb-6">
-              Get in Touch
-            </h2>
-            <div className="space-y-6">
-              <div className="flex items-start">
-                <svg
-                  className="w-6 h-6 text-primary-600 mt-1 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <div>
-                  <h3 className="font-semibold text-secondary-900">Address</h3>
-                  <p className="text-secondary-600">
-                    123 Brotherhood Street
-                    <br />
-                    Unity City, UC 12345
-                    <br />
-                    United States
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <svg
-                  className="w-6 h-6 text-primary-600 mt-1 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-                <div>
-                  <h3 className="font-semibold text-secondary-900">Phone</h3>
-                  <p className="text-secondary-600">+1 (555) 123-4567</p>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <svg
-                  className="w-6 h-6 text-primary-600 mt-1 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-                <div>
-                  <h3 className="font-semibold text-secondary-900">Email</h3>
-                  <p className="text-secondary-600">
-                    info@brotherhoodalliance.org
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <svg
-                  className="w-6 h-6 text-primary-600 mt-1 mr-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <div>
-                  <h3 className="font-semibold text-secondary-900">
-                    Office Hours
-                  </h3>
-                  <p className="text-secondary-600">
-                    Monday - Friday: 9:00 AM - 6:00 PM
-                    <br />
-                    Saturday: 10:00 AM - 4:00 PM
-                    <br />
-                    Sunday: Closed
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Map placeholder */}
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold text-secondary-900 mb-4">
-                Location
-              </h3>
-              <div className="bg-secondary-100 rounded-lg h-64 flex items-center justify-center cursor-pointer hover:bg-secondary-200 transition-colors">
-                <div className="text-center">
-                  <svg
-                    className="w-12 h-12 text-secondary-400 mx-auto mb-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <p className="text-secondary-600">Interactive Map</p>
-                  <p className="text-sm text-secondary-500">
-                    Click to view full map
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ContactInfoSection />
 
           {/* Contact Form */}
           <div>
@@ -232,36 +270,34 @@ const ContactPage: React.FC = () => {
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <Input
-                    label="First Name"
-                    type="text"
-                    {...register("firstName", {
-                      required: "First name is required",
-                      minLength: {
-                        value: 2,
-                        message: "First name must be at least 2 characters",
-                      },
-                    })}
-                    error={errors.firstName?.message}
-                    placeholder="Enter your first name"
-                  />
-                </div>
-                <div>
-                  <Input
-                    label="Last Name"
-                    type="text"
-                    {...register("lastName", {
-                      required: "Last name is required",
-                      minLength: {
-                        value: 2,
-                        message: "Last name must be at least 2 characters",
-                      },
-                    })}
-                    error={errors.lastName?.message}
-                    placeholder="Enter your last name"
-                  />
-                </div>
+                <Input
+                  label="First Name"
+                  type="text"
+                  {...register("firstName", {
+                    required: "First name is required",
+                    minLength: {
+                      value: 2,
+                      message: "First name must be at least 2 characters",
+                    },
+                  })}
+                  value={""}
+                  error={errors.firstName?.message}
+                  placeholder="Enter your first name"
+                />
+                <Input
+                  label="Last Name"
+                  type="text"
+                  {...register("lastName", {
+                    required: "Last name is required",
+                    minLength: {
+                      value: 2,
+                      message: "Last name must be at least 2 characters",
+                    },
+                  })}
+                  value={""}
+                  error={errors.lastName?.message}
+                  placeholder="Enter your last name"
+                />
               </div>
 
               <Input
@@ -274,6 +310,7 @@ const ContactPage: React.FC = () => {
                     message: "Invalid email address",
                   },
                 })}
+                value={""}
                 error={errors.email?.message}
                 placeholder="Enter your email address"
               />
@@ -281,6 +318,7 @@ const ContactPage: React.FC = () => {
               <Input
                 label="Phone Number (Optional)"
                 type="tel"
+                value={""}
                 {...register("phone")}
                 placeholder="Enter your phone number"
               />

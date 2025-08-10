@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Table, { Column } from "@/components/ui/Table";
 import Button from "@/components/ui/Button";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import MemberManagementModal from "../modal/member-management-modal";
 
 interface Member {
   id: number;
@@ -15,6 +16,7 @@ interface Member {
 const MemberManagement: React.FC = () => {
   const [memberData, setMemberData] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -84,8 +86,12 @@ const MemberManagement: React.FC = () => {
     alert(`Edit member with ID: ${id}`);
   };
 
-  const handleAddMember = () => {
-    alert("Add Member clicked");
+  const handleAddMember = (data: Omit<Member, "id">) => {
+    const newMember: Member = {
+      id: memberData.length + 1, // Temporary ID
+      ...data, // Spread the data from the form
+    };
+    setMemberData([...memberData, newMember]);
   };
 
   if (loading) {
@@ -96,7 +102,7 @@ const MemberManagement: React.FC = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-slate-900">Member Management</h2>
-        <Button size="md" onClick={handleAddMember}>
+        <Button size="md" onClick={() => setIsAddModalOpen(true)}>
           <span className="sm:hidden">+</span>
           <span className="hidden sm:inline">Add Member</span>
         </Button>
@@ -106,6 +112,12 @@ const MemberManagement: React.FC = () => {
           <Table<Member> data={memberData} columns={columns} />
         </div>
       </div>
+      {/* Add Member Modal */}
+      <MemberManagementModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={handleAddMember}
+      />
     </div>
   );
 };
