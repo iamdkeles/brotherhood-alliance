@@ -186,7 +186,7 @@ const MemberManagementModal: React.FC<MemberManagementModalProps> = ({
               type="date"
               name="joined"
               required
-              placeholder=""
+              placeholder="YYYY-MM-DD"
               value={formData.joined}
               onChange={handleChange}
               className="w-full"
