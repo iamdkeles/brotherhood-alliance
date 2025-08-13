@@ -168,6 +168,9 @@ const MembershipPage: React.FC = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <Input
                 label="Full Name"
+                type="text"
+                value={""}
+                placeholder="Enter your full name"
                 {...register("fullName", { required: "Full name is required" })}
                 error={errors.fullName?.message}
               />
@@ -175,6 +178,8 @@ const MembershipPage: React.FC = () => {
               <Input
                 label="Email Address"
                 type="email"
+                value={""}
+                placeholder="Enter your email address"
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
@@ -188,6 +193,8 @@ const MembershipPage: React.FC = () => {
               <Input
                 label="Phone Number"
                 type="tel"
+                value={""}
+                placeholder="Enter your phone number"
                 {...register("phone", { required: "Phone number is required" })}
                 error={errors.phone?.message}
               />
@@ -195,6 +202,7 @@ const MembershipPage: React.FC = () => {
               <TextArea
                 label="Why do you want to join The Brotherhood Alliance?"
                 rows={4}
+                placeholder="Share your motivation and reasons for wanting to join..."
                 {...register("motivation", {
                   required: "Please share your motivation",
                   minLength: {
@@ -207,10 +215,13 @@ const MembershipPage: React.FC = () => {
               />
 
               <Input
-                label="Referral (Optional)"
-                {...register("referral", { required: "Referral is required" })}
+                label="Referral (Required)"
+                type="text"
+                value={""}
+                placeholder="Name of the member who referred you"
+                {...register("referral")}
                 error={errors.referral?.message}
-                helperText="Name of the member who referred you"
+                
               />
 
               <Button
@@ -219,10 +230,11 @@ const MembershipPage: React.FC = () => {
                 className="w-full"
                 size="lg"
               >
-                Submit Application
+                {isSubmitting ? "Submitting Application..." : "Submit Application"}
               </Button>
             </form>
-            <div className="mt-6 text-center gap-2">
+            
+            <div className="mt-6 text-center">
               <p className="text-md text-secondary-600 font-sans">
                 Already a member?
                 <Link
