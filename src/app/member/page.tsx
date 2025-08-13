@@ -433,6 +433,8 @@ export default function MemberPortalPage() {
                           </label>
                           <Input
                             type="text"
+                            name="fullName"
+                            placeholder="Enter full name"
                             value={profileData.fullName}
                             onChange={(e) =>
                               handleProfileChange("fullName", e.target.value)
@@ -445,6 +447,8 @@ export default function MemberPortalPage() {
                           </label>
                           <Input
                             type="email"
+                            name="email"
+                            placeholder="Enter email address"
                             value={profileData.email}
                             onChange={(e) =>
                               handleProfileChange("email", e.target.value)
@@ -457,6 +461,8 @@ export default function MemberPortalPage() {
                           </label>
                           <Input
                             type="tel"
+                            name="phone"
+                            placeholder="Enter phone number"
                             value={profileData.phone}
                             onChange={(e) =>
                               handleProfileChange("phone", e.target.value)
@@ -469,8 +475,9 @@ export default function MemberPortalPage() {
                           </label>
                           <Input
                             type="text"
+                            name="memberId"
+                            placeholder="BA-2019-0147"
                             value={profileData.memberId}
-                            readOnly
                             className="bg-gray-50"
                           />
                         </div>
