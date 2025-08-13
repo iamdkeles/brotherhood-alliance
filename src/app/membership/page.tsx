@@ -238,7 +238,7 @@ const MembershipPage: React.FC = () => {
               <p className="text-md text-secondary-600 font-sans">
                 Already a member?
                 <Link
-                  href="/member-portal"
+                  href="/login"
                   className="text-primary-600 hover:underline font-sans hover:text-primary-700 ml-2"
                 >
                   Click here to login
